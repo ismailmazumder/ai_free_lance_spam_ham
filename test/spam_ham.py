@@ -1,5 +1,5 @@
 import pandas as pd
-data = pd.read_csv("/home/ismail/PycharmProjects/free/test/spam_final.csv")
+data = pd.read_csv("/home/ismail/PycharmProjects/free/test/spam_final_final.csv")
 # null
 data = data.drop_duplicates()
 data.duplicated().sum()
