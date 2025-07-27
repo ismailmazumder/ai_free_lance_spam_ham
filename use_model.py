@@ -1,35 +1,29 @@
-import string
+# use_model.py
 import joblib
+import os
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import nltk
+import string
 
+# Ensure NLTK deps
 nltk.download('stopwords')
-nltk.download('wordnet')
 nltk.download('punkt')
+nltk.download('wordnet')
 
-# প্রিপ্রসেস ফাংশন
-def preprocess_text(text):
-    stop_words = set(stopwords.words('english'))
-    lemmatizer = WordNetLemmatizer()
+# লোড ভেক্টরাইজার ও মডেল
+if not os.path.exists('tfidf_vectorizer.pkl') or not os.path.exists('naive_bayes_model.pkl'):
+    raise FileNotFoundError("Run train.py first to generate the .pkl files")
 
-    text = text.lower()
-    text = ''.join([char for char in text if char not in string.punctuation])
-    words = text.split()
-    words = [word for word in words if word not in stop_words]
-    words = [lemmatizer.lemmatize(word) for word in words]
-
-    return ' '.join(words)
-
-# মডেল ও ভেক্টর লোড
 tf = joblib.load('tfidf_vectorizer.pkl')
 clf = joblib.load('naive_bayes_model.pkl')
 
-# নতুন ইনপুট
-your_sen = ["Hello name Rahul live Delhi Today went market bought vegetables fruits good day tired"]
-your_sen = [preprocess_text(sen) for sen in your_sen]
-your_sen_vec = tf.transform(your_sen).toarray()
+# Text preprocessing
+stop_words = set(stopwords.words('english'))
+lemmatizer = WordNetLemmatizer()
 
-# প্রেডিকশন
-prediction = clf.predict(your_sen_vec)
-print("Prediction:", prediction[0])
+def preprocess_text(text: str) -> str:
+    text = text.lower()
+    text = ''.join([c for c in text if c not in string.punctuation])
+    words = [w for w in text.split() if w not in stop_words]
+    return " ".join(lemmatizer.lemmatize(w) for w in words)

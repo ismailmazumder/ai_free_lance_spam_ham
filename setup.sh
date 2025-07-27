@@ -11,3 +11,4 @@ sudo apt install libtesseract-dev -y
 export TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata/
 git clone https://github.com/tesseract-ocr/tessdata_best.git
 sudo mv tessdata_best/* /usr/share/tesseract-ocr/5/tessdata/
+python3 app.py

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Spam vs Ham Detector</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    .container { max-width: 600px; margin: auto; }
+    textarea { width: 100%; height: 100px; }
+    input[type=file] { margin-top: 1rem; }
+    .result { margin-top: 1rem; font-size: 1.2rem; }
+    .buttons { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Spam vs Ham Detector</h1>
+    <form method="POST" enctype="multipart/form-data">
+      <label>Enter Text:</label><br>
+      <textarea name="text_input" placeholder="Type...">{{ input_text }}</textarea><br>
+      <label>Or Upload Image:</label><br>
+      <input type="file" name="image_file" accept="image/*"><br>
+      <button type="submit">Detect</button>
+    </form>
+
+    {% if prediction is not none %}
+      <div class="result">
+        <strong>Input:</strong> {{ input_text }}<br>
+        <strong>Prediction:</strong> {{ prediction }}<br>
+      </div>
+
+      <!-- User modify form -->
+      <div class="buttons">
+        <form method="POST" action="/modify">
+          <input type="hidden" name="input_text" value="{{ input_text }}">
+          <label>Correct Label:</label>
+          <select name="correct_label">
+            <option value="ham">Ham</option>
+            <option value="spam">Spam</option>
+          </select>
+          <button type="submit">Save Correction</button>
+        </form>
+      </div>
+    {% endif %}
+
+    <!-- Retrain button -->
+    <div class="buttons">
+      <form method="POST" action="/retrain">
+        <button type="submit">Retrain Model</button>
+      </form>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+</body>
+</html>
