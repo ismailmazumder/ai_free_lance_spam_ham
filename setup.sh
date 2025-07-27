@@ -4,6 +4,7 @@ sudo apt install python3,python3-pip -y
 pip install pytesseract,langdetect,nltk,pandas
 pip install scikit-learn
 pip install banglanltk
+pip install Flask
 pip install googletrans==4.0.0-rc1
 sudo apt install tesseract-ocr -y
 sudo apt install libtesseract-dev -y
